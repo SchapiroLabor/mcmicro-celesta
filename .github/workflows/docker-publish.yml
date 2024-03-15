@@ -9,7 +9,7 @@ on:
   release:
     types: [ "published" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "docker" ]
 
 env:
   # Use docker.io for Docker Hub if empty
