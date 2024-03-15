@@ -27,3 +27,14 @@ mcmicro nf-core module for cell phenotyping using CELESTA
 - `--index_low`which should provide the path to a 1 row .csv file (i.e. a vector) to define low thresholds for index cell identification during iteration. Examples can be found [here](https://github.com/plevritis-lab/CELESTA/tree/main/data). This input is optional. If not provided, a vector consisting of only `1`, with length equal to input from `--anchor_high`, will be created.
 - `-o`/`--output`, which should provide the path to the output folder. This input is optional. If not provided, the current working directory will be used.
 - `-t`/`--title`, which should be a user-defined tag that will be used to define the project title inside the CELESTA algorithm and will be provided in the result .csv file
+
+| Option         | Description                                                                                                                                                         | Mandatory |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
+| -i/--image_data| Path to the quantification output as a .csv (e.g., after running MCMICRO). Includes marker intensities, CellID, and X/Y columns.                                      | Yes       |
+| -s/--signature | Path to the signature matrix for cell type definition (prior marker info) as a .csv file. Description found [here](CELESTA).                                          | Yes       |
+| --anchor_high  | Path to a 1 row .csv file (i.e., a vector) defining high thresholds for anchor cell identification. Examples can be found [here](https://example.com).             | Yes       |
+| --index_high   | Path to a 1 row .csv file (i.e., a vector) defining high thresholds for index cell identification during iteration. Examples can be found [here](https://example.com).| Yes       |
+| --anchor_low   | Path to a 1 row .csv file (i.e., a vector) defining low thresholds for anchor cell identification. Examples can be found [here](https://example.com).            | No        |
+| --index_low    | Path to a 1 row .csv file (i.e., a vector) defining low thresholds for index cell identification during iteration. Examples can be found [here](https://example.com). | No        |
+| -o/--output    | Path to the output folder. If not provided, the current working directory will be used.                                                                             | No        |
+| -t/--title     | User-defined tag used to define the project title inside the CELESTA algorithm and provided in the result .csv file.                                                | No        |
