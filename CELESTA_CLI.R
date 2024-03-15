@@ -47,8 +47,9 @@ if (is.null(opt$index_low)) {
   low_marker_threshold_iteration = as.vector(read.csv(opt$index_low, header = FALSE))
 }
 
+# If no folder is given, set to current working directory
 if (is.null(opt$output)) {
-  output_folder = "."
+  output_folder = getwd() 
 } else {
   output_folder = as.character(opt$output)
 }
@@ -81,7 +82,8 @@ CelestaObj <- AssignCells(CelestaObj,max_iteration=10,cell_change_threshold=0.01
                           high_expression_threshold_anchor=high_marker_threshold_anchor,
                           low_expression_threshold_anchor=low_marker_threshold_anchor,
                           high_expression_threshold_index=high_marker_threshold_iteration,
-                          low_expression_threshold_index=low_marker_threshold_iteration)
+                          low_expression_threshold_index=low_marker_threshold_iteration,
+                          save_result = F)
 
 ### After the AssignCells() function, the CELESTA assigned cell types will be stored in the CelestaObj
 ### in the field called final_cell_type_assignment with each row corresponding to a cell. 
@@ -118,10 +120,13 @@ CelestaObj <- AssignCells(CelestaObj,max_iteration=10,cell_change_threshold=0.01
 # Output files for analysis
 #marker_prob = CelestaObj@marker_exp_prob
 
-final_results = CelestaObj@final_cell_type_assignment
+celesta_results = cbind(
+  CelestaObj@final_cell_type_assignment,
+  CelestaObj@coords,
+  CelestaObj@marker_exp_prob)
 
 ## Use file.path to construct full file paths and write CSVs according to predefined filenames
-write.csv(final_results, file.path(output_folder, paste0(title, "_final_cell_type_assignment.csv")))
+write.csv(celesta_results, file.path(output_folder, paste0(title, "_celesta_results.csv")))
 
 # write.csv(marker_prob, "output/marker_probability_CELESTA.csv")
 # write.csv(cell_types, "output/final_celltypes_CELESTA.csv")
