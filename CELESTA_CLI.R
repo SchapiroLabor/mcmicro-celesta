@@ -34,6 +34,11 @@ prior_marker_info = read.csv(opt$signature)
 high_marker_threshold_anchor = as.vector(read.csv(opt$anchor_high, header = FALSE))
 high_marker_threshold_iteration = as.vector(read.csv(opt$index_high, header = FALSE))
 
+# Adjust MCMICRO input for CELESTA
+names(imaging_data)[names(imaging_data) == "X_centroid"] <- "X"
+names(imaging_data)[names(imaging_data) == "Y_centroid"] <- "Y"
+imaging_data <- imaging_data[, !names(imaging_data) %in% c("Area", "MajorAxisLength", "MinorAxisLength", "Eccentricity", "Solidity", "Extent", "Orientation")]
+
 # If we do not get an input for low thresholds, we want to create our own vector with length of the other vectors consisting of only 1's
 if (is.null(opt$anchor_low)) {
   low_marker_threshold_anchor = rep(1, length(high_marker_threshold_anchor))
