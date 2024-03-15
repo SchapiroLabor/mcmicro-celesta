@@ -17,7 +17,7 @@ mcmicro nf-core module for cell phenotyping using CELESTA
 - Surpressing the default `save_result` output from `AssignCells()`
 - Creating the desired CSV output by getting `final_cell_type_assignment`, `coords`and `marker_exp_prob` from the `CelestaObj`
 
-### How to use CELESTA_CLI
+### Usage
 
 | Option         | Description                                                                                                                                                         | Mandatory |
 |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
@@ -29,3 +29,10 @@ mcmicro nf-core module for cell phenotyping using CELESTA
 | --index_low    | Path to a 1 row .csv file (i.e., a vector) defining low thresholds for index cell identification during iteration. Examples can be found [here](https://example.com). | No        |
 | -o/--output    | Path to the output folder. If not provided, the current working directory will be used.                                                                             | No        |
 | -t/--title     | User-defined tag used to define the project title inside the CELESTA algorithm and provided in the result .csv file.                                                | No        |
+
+### Docker Usage
+
+To build the container:
+```
+git clone
+```
