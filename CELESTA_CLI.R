@@ -132,11 +132,3 @@ celesta_results = cbind(
 
 ## Use file.path to construct full file paths and write CSVs according to predefined filenames
 write.csv(celesta_results, file.path(output_folder, paste0(title, "_celesta_results.csv")))
-
-# write.csv(marker_prob, "output/marker_probability_CELESTA.csv")
-# write.csv(cell_types, "output/final_celltypes_CELESTA.csv")
-
-
-
-
-
