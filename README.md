@@ -34,5 +34,22 @@ mcmicro nf-core module for cell phenotyping using CELESTA
 
 To build the container:
 ```
-git clone
+git clone https://github.com/SchapiroLabor/mcmicro-celesta.git
+docker build -t mcmicro_celesta:latest .
+```
+
+To run the docker container: 
+```
+## Note: Mount the local volume to the local folder in the directory
+docker run --platform linux/amd64 -it --rm -v $(pwd):/local celesta Rscript /local/CELESTA_CLI.R <input_parameters>
+
+```
+
+To pull the container from the Github container registry (ghcr.io):
+```
+## Login to ghcr.io
+docker login ghcr.io
+
+## Pull container
+docker pull ghcr.io/schapirolabor/mcmicro-celesta:v0.0.1
 ```
