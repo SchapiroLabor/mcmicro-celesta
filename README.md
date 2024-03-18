@@ -30,7 +30,7 @@ mcmicro nf-core module for cell phenotyping using CELESTA
 | -o/--output    | Path to the output folder. If not provided, the current working directory will be used.                                                                             | No        |
 | -t/--title     | User-defined tag used to define the project title inside the CELESTA algorithm and provided in the result .csv file.                                                | No        |
 
-### Docker Usage
+## Docker Usage
 
 To build the container:
 ```
