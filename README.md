@@ -15,18 +15,17 @@ mcmicro nf-core module for cell phenotyping using CELESTA
 - If optional vector inputs are not given, a custom vector is created that consists of only 1s
 - Checking if folder output and a title were provided
 - Surpressing the default `save_result` output from `AssignCells()`
-- Creating the desired CSV output by getting `final_cell_type_assignment`, `coords`and `marker_exp_prob` from the `CelestaObj`
+- Creating the desired CSV output by getting `final_cell_type_assignment` from the `CelestaObj` and binding it to the input from `--image_data'
+- Creating a quality inspection .csv file from `marker_exp_prob` of the `CelestaObj`.
 
 ### Usage
 
 | Option         | Description                                                                                                                                                         | Mandatory |
 |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
 | -i/--image_data| Path to the quantification output as a .csv (e.g., after running MCMICRO). Includes marker intensities, CellID, and X/Y columns.                                      | Yes       |
-| -s/--signature | Path to the signature matrix for cell type definition (prior marker info) as a .csv file. Description found [here](CELESTA).                                          | Yes       |
-| --anchor_high  | Path to a 1 row .csv file (i.e., a vector) defining high thresholds for anchor cell identification. Examples can be found [here](https://example.com).             | Yes       |
-| --index_high   | Path to a 1 row .csv file (i.e., a vector) defining high thresholds for index cell identification during iteration. Examples can be found [here](https://example.com).| Yes       |
-| --anchor_low   | Path to a 1 row .csv file (i.e., a vector) defining low thresholds for anchor cell identification. Examples can be found [here](https://example.com).            | No        |
-| --index_low    | Path to a 1 row .csv file (i.e., a vector) defining low thresholds for index cell identification during iteration. Examples can be found [here](https://example.com). | No        |
+| -s/--signature | Path to the signature matrix for cell type definition (prior marker info) as a .csv file. Description can be found [here](https://github.com/plevritis-lab/CELESTA).  | Yes       |
+| --high         | Path to a .csv file with 2 rows defining high thresholds for anchor cell (row 1) and index cells (row2).                                                              | Yes       |
+| --low          | Path to a .csv file with 2 rows defining low thresholds for anchor cell (row 1) and index cells (row2).                                                               | No        |
 | -o/--output    | Path to the output folder. If not provided, the current working directory will be used.                                                                             | No        |
 | -t/--title     | User-defined tag used to define the project title inside the CELESTA algorithm and provided in the result .csv file.                                                | No        |
 
@@ -51,5 +50,5 @@ To pull the container from the Github container registry (ghcr.io):
 docker login ghcr.io
 
 ## Pull container
-docker pull ghcr.io/schapirolabor/mcmicro-celesta:v0.0.1
+docker pull ghcr.io/schapirolabor/mcmicro-celesta:v0.0.2
 ```
