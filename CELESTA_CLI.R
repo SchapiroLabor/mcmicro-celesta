@@ -10,10 +10,8 @@ library(optparse)
 option_list = list(
   make_option(c("-i", "--image_data"), type = "character", default = NULL, help = "path to quantification dataset with X/Y coordinates in csv format", metavar = "character"),
   make_option(c("-s", "--signature"), type = "character", default = NULL, help = "path to the signature matrix in csv format", metavar = "character"),
-  make_option(c("--anchor_high"), type = "character", default = NULL, help = "path to vector as csv file (1 dimensional, 1 row)  of high marker thresholds for anchor cells", metavar = "character"),
-  make_option(c("--index_high"), type = "character", default = NULL, help = "path to vector as csv file (1 dimensional, 1 row) of high marker thresholds for index cells", metavar = "character"),
-  make_option(c("--anchor_low"), type = "character", default = NULL, help = "path to optional vector as csv file (1 dimensional, 1 row) of low marker thresholds for anchor cells", metavar = "character"),
-  make_option(c("--index_low"), type = "character", default = NULL, help = "path to vptional vector as csv file (1 dimensional, 1 row) of low marker thresholds for index cells", metavar = "character"),
+  make_option(c("--high"), type = "character", default = NULL, help = "path to as csv file with high thresholds for anchor (row1) and index (row2) cells, including a header with markers", metavar = "character"),
+  make_option(c("--low"), type = "character", default = NULL, help = "optional path to as csv file with low thresholds for anchor (row1) and index (row2) cells, including a header with markers", metavar = "character"),
   make_option(c("-o", "--output"), type = "character", default = NULL, help = "optional path to stored the result .csv files, if not specified, current working directory will be used", metavar = "character"),
   make_option(c("-t", "--title"), type = "character", default = NULL, help = "optional project title used as a tag for the results", metavar = "character")
 );
@@ -23,16 +21,16 @@ opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
 # Check, if the 4 required inputs were prompted
-if (is.null(opt$image_data) || is.null(opt$signature) || is.null(opt$anchor_high) || is.null(opt$index_high)) {
+if (is.null(opt$image_data) || is.null(opt$signature) || is.null(opt$high)){
   print_help(opt_parser)
-  stop("At least these 4 inputs are required: --image_data (-i), --signature (-s), --anchor_high, --index_high")
+  stop("At least these 3 inputs are required: --image_data (-i), --signature (-s), --high")
 }
 
 #Produce the inputs required for CELSTA algorithm
 imaging_data = read.csv(opt$image_data)
 prior_marker_info = read.csv(opt$signature)
-high_marker_threshold_anchor = as.vector(read.csv(opt$anchor_high, header = FALSE))
-high_marker_threshold_iteration = as.vector(read.csv(opt$index_high, header = FALSE))
+high_marker_threshold_anchor = as.vector(read.csv(opt$high, header = TRUE)[1, ])
+high_marker_threshold_iteration = as.vector(read.csv(opt$high, header = TRUE)[2, ])
 
 # Adjust MCMICRO input for CELESTA
 names(imaging_data)[names(imaging_data) == "X_centroid"] <- "X"
@@ -40,16 +38,16 @@ names(imaging_data)[names(imaging_data) == "Y_centroid"] <- "Y"
 imaging_data <- imaging_data[, !names(imaging_data) %in% c("Area", "MajorAxisLength", "MinorAxisLength", "Eccentricity", "Solidity", "Extent", "Orientation")]
 
 # If we do not get an input for low thresholds, we want to create our own vector with length of the other vectors consisting of only 1's
-if (is.null(opt$anchor_low)) {
+if (is.null(opt$low)) {
   low_marker_threshold_anchor = rep(1, length(high_marker_threshold_anchor))
 } else {
-  low_marker_threshold_anchor = as.vector(read.csv(opt$anchor_low, header = FALSE))
+  low_marker_threshold_anchor = as.vector(read.csv(opt$low, header = TRUE)[1, ])
 }
 
-if (is.null(opt$index_low)) {
+if (is.null(opt$low)) {
   low_marker_threshold_iteration = rep(1, length(high_marker_threshold_anchor))
 } else {
-  low_marker_threshold_iteration = as.vector(read.csv(opt$index_low, header = FALSE))
+  low_marker_threshold_iteration = as.vector(read.csv(opt$low, header = TRUE)[2, ])
 }
 
 # If no folder is given, set to current working directory
@@ -122,13 +120,19 @@ CelestaObj <- AssignCells(CelestaObj,max_iteration=10,cell_change_threshold=0.01
 #            prior_marker_info = prior_marker_info,
 #            save_plot = TRUE)
 
-# Output files for analysis
-#marker_prob = CelestaObj@marker_exp_prob
+
+final_celltypes = as.data.frame(CelestaObj@final_cell_type_assignment)$'Final cell type'
 
 celesta_results = cbind(
-  CelestaObj@final_cell_type_assignment,
-  CelestaObj@coords,
-  CelestaObj@marker_exp_prob)
+  imaging_data,
+  final_celltypes)
+
+inspection = cbind(
+  CelestaObj@cell_ID,
+  CelestaObj@marker_exp_prob,
+  final_celltypes)
+colnames(inspection)[1] = "CellID"
 
 ## Use file.path to construct full file paths and write CSVs according to predefined filenames
 write.csv(celesta_results, file.path(output_folder, paste0(title, "_celesta_results.csv")))
+write.csv(inspection, file.path(output_folder, paste0(title, "_quality.csv")))
