@@ -50,5 +50,5 @@ To pull the container from the Github container registry (ghcr.io):
 docker login ghcr.io
 
 ## Pull container
-docker pull ghcr.io/schapirolabor/mcmicro-celesta:v0.0.1
+docker pull ghcr.io/schapirolabor/mcmicro-celesta:v0.0.2
 ```
