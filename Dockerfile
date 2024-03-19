@@ -21,10 +21,10 @@ RUN install2.r --error \
 RUN installGithub.r plevritis/CELESTA
 
 ##Make directories
-RUN mkdir -p /local
+RUN mkdir -p /app
 
 # Set the working directory 
-WORKDIR /local
+WORKDIR /app
 
 # Copy the current directory contents to the container at /local
 COPY . . 
