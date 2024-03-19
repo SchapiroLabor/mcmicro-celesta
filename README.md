@@ -26,7 +26,6 @@ mcmicro nf-core module for cell phenotyping using CELESTA
 | -s/--signature | Path to the signature matrix for cell type definition (prior marker info) as a .csv file. Description can be found [here](https://github.com/plevritis-lab/CELESTA).  | Yes       |
 | --high         | Path to a .csv file with 2 rows defining high thresholds for anchor cell (row 1) and index cells (row2).                                                              | Yes       |
 | --low          | Path to a .csv file with 2 rows defining low thresholds for anchor cell (row 1) and index cells (row2).                                                               | No        |
-| -o/--output    | Path to the output folder. If not provided, the current working directory will be used.                                                                             | No        |
 | -t/--title     | User-defined tag used to define the project title inside the CELESTA algorithm and provided in the result .csv file.                                                | No        |
 
 ## Docker Usage
