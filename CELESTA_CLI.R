@@ -12,7 +12,7 @@ option_list = list(
   make_option(c("-s", "--signature"), type = "character", default = NULL, help = "path to the signature matrix in csv format", metavar = "character"),
   make_option(c("--high"), type = "character", default = NULL, help = "path to as csv file with high thresholds for anchor (row1) and index (row2) cells, including a header with markers", metavar = "character"),
   make_option(c("--low"), type = "character", default = NULL, help = "optional path to as csv file with low thresholds for anchor (row1) and index (row2) cells, including a header with markers", metavar = "character"),
-  #make_option(c("-o", "--output"), type = "character", default = NULL, help = "optional path to stored the result .csv files, if not specified, current working directory will be used", metavar = "character"),
+  make_option(c("-o", "--output"), type = "character", default = NULL, help = "optional path to stored the result .csv files, if not specified, current working directory will be used", metavar = "character"),
   make_option(c("-t", "--title"), type = "character", default = NULL, help = "optional project title used as a tag for the results", metavar = "character")
 );
 
@@ -50,12 +50,12 @@ if (is.null(opt$low)) {
   low_marker_threshold_iteration = as.vector(read.csv(opt$low, header = TRUE)[2, ])
 }
 
-## If no folder is given, set to current working directory
-#if (is.null(opt$output)) {
-#  output_folder = getwd() 
-#} else {
-#  output_folder = as.character(opt$output)
-#}
+#If no folder is given, set to current working directory
+if (is.null(opt$output)) {
+  output_folder = getwd() 
+} else {
+  output_folder = as.character(opt$output)
+}
 
 if (is.null(opt$title)) {
   title = ""
