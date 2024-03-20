@@ -134,5 +134,6 @@ inspection = cbind(
 colnames(inspection)[1] = "CellID"
 
 ## Use file.path to construct full file paths and write CSVs according to predefined filenames
-write.csv(celesta_results, paste0(title, "_celesta_results.csv"))
-write.csv(inspection, paste0(title, "_quality.csv"))
+write.csv(celesta_results, file.path(output_folder, paste0(title, "_celesta_results.csv")))
+write.csv(inspection, file.path(output_folder, paste0(title, "_quality.csv")))
+
